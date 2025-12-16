@@ -72,7 +72,7 @@ You can gracefully pause a training run and resume it later. This is useful for 
 **To Pause:**
 1.  Press `Ctrl+C` in the terminal where the training is running.
 2.  The script will catch the signal, finish the current iteration, and save a `resume.pt` checkpoint in the run's checkpoint directory (e.g., `checkpoints/PROJECT_NAME/RUN_NAME/resume.pt`).
-3.  It will also create a `resune.pt` file in your `data_path` directory, which the resume logic uses to find the correct checkpoint.
+3.  It will also create a `.resume` file in your `data_path` directory, which the resume logic uses to find the correct checkpoint.
 
 **To Resume:**
 1.  Re-run the *exact same* training command you used to start the run.

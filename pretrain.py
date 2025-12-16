@@ -520,15 +520,9 @@ def launch(hydra_config: DictConfig):
             
             train_state.step = checkpoint['step']
             train_state.carry = checkpoint['carry']
-            if train_state.carry is not None:
-                # Move carry to current device. Handle both dict and object cases.
-                if isinstance(train_state.carry, dict):
-                    train_state.carry = {k: v.to(map_location, non_blocking=True) for k, v in train_state.carry.items()}
-                # Handle generic objects that might contain tensors
-                elif hasattr(train_state.carry, '__dict__'):
-                    for attr, value in vars(train_state.carry).items():
-                        if isinstance(value, torch.Tensor):
-                            setattr(train_state.carry, attr, value.to(map_location, non_blocking=True))
+            # The call to torch.load with `map_location` already moves all tensors
+            # in the checkpoint to the correct device. No further manual `.to(device)`
+            # calls are needed for the 'carry' state.
             train_loader.dataset._iters = checkpoint['puzzle_dataset_iters']
             wandb_run_id = checkpoint.get('wandb_run_id')
             
